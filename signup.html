@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	 <!--Import materialize.css-->
+	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+	<link type="text/css" rel="stylesheet" href="css/MyCSS.css"  media="screen,projection"/>
+	<!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body class="teal lighten-5">
+	<!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+
+    <header>
+    </header>
+
+   <nav>
+    	<div class="nav-wrapper teal lighten-2">
+		    <a href="#" class="brand-logo center">
+		    	 <i class="large material-icons">mode_edit</i>Tinp - Cadastro
+		    </a>
+		    <ul id="nav-mobile" class="right hide-on-med-and-down">
+		     <li class ="teal lighten-1"><a href="about.html">Sobre</a></li>
+		    </ul>
+	        <a href="index.html" class="breadcrumb">Acesso</a>
+	        <a href="#!" class="breadcrumb">Cadastro</a>
+   		</div>
+    </nav>
+
+    <section>
+		<div class="container"> 
+			<div class="row">
+			<div class="col s12 m6" id="LoginContainer">
+			    <div class="card">
+			        <div class="card-content">
+			            <span class="card-title black-text cardTitleCustom">Cadastro</span>
+			            <form action="javascript:ajaxSignup()" method="POST" id="signup">
+			                <div class="row">
+			                    <div class="input-field col s12">
+			                    	<i class="material-icons prefix">account_circle</i>
+			                        <input placeholder="Insira o nome" name="User" type="text" class="validate">
+			                        <label for="User" class="active">Usuário</label>
+			                    </div>
+			                </div>
+			                <div class="row">
+			                    <div class="input-field col s12">
+						     	    <i class="material-icons prefix">lock_open</i>
+			                        <input placeholder="Insira a senha" name="Password" type="password" class="validate">
+			                        <label for="Password" class="active">Senha</label>
+			                    </div>
+			                </div>
+				        </div>
+				        <div class="card-action">
+				            <input type="submit" class="btn btnLogin" value="Cadastrar">
+				        </div>
+			            </form>
+			    </div>
+			</div>
+			</div>
+		</div> 
+	</section>
+	<footer>
+	</footer>
+
+</body>
+<script>
+	function ajaxSignup()
+	{
+		debugger;
+		var form = document.getElementById('signup');
+		var formData = new FormData(form);
+		var request = new XMLHttpRequest();
+		// Add any event handlers here...
+		request.open('POST', 'signup.php', true);
+		request.send(formData);
+		request.onreadystatechange = function() {
+	   		if(this.readyState == 4 && this.status == 200){
+	       		var response = JSON.parse(this.responseText);
+			    if (response.wasRegistered){
+			    	sendToLoginPage();
+			    }
+			    else{
+			    	resendToSignup();
+			    }
+	       	}
+       }
+	}
+
+	function sendToLoginPage()
+	{
+		Materialize.toast('Cadastro efetuado com sucesso', 2000, 'green darken-1 rounded');
+		setTimeout(function(){
+								window.location = "mainSite.html";
+							 }, 2000);
+	}
+
+	function resendToSignup()
+	{
+		Materialize.toast('Cadastro inválido, tente novamente', 2000, 'red lighten-1 rounded');
+	}
+
+</script>
+
+
+</html>

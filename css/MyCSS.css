@@ -1,0 +1,26 @@
+#LoginContainer {
+    float: none;
+    margin: 20% auto;
+    width: 23.3%;
+    height: 30%;
+}
+
+#About {
+    float: none;
+    margin: 10% auto;
+}
+
+.btnLogin {
+	width:99%;
+}
+
+.cardTitleCustom {	
+	display:table;
+	margin:0 auto;
+}
+
+.flexCard {
+ 	display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	 <!--Import materialize.css-->
+	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+	<link type="text/css" rel="stylesheet" href="css/MyCSS.css"  media="screen,projection"/>
+	<!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body class="teal lighten-5" onload="checkLogin()">
+	<!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+
+    <header>
+    </header>
+
+    <nav>
+    	<div class="nav-wrapper teal lighten-2">
+		    <a href="#" class="brand-logo center">
+		    	 <i class="large material-icons">mode_edit</i>Tinp - Acesso
+		    </a>
+		    <ul id="nav-mobile" class="right hide-on-med-and-down">
+		    
+		    <!--Pra acessar o exemplo da professora <a href="EXEMPLOS-Prof/index.php"> -->
+
+		     <li class ="teal lighten-1"><a href="about.html">Sobre</a></li>
+		     <li class ="teal darken-2" onclick="logout()"><a href="">Logout</a></li>
+		    </ul>
+	        <a href="index.html" class="breadcrumb">Acesso</a>
+    	</div>
+    </nav>
+
+    <section>
+		<div class="container"> 
+			<div class="row">
+			<div class="col s12 m6" id="LoginContainer">
+			    <div class="card">
+			        <div class="card-content">
+			            <span class="card-title black-text cardTitleCustom">Acesso</span>
+			            <form action="javascript:ajaxLogin()" method="post" id ="login">
+			                <div class="row">
+			                    <div class="input-field col s12">
+			                    	<i class="material-icons prefix">account_circle</i>
+			                        <input placeholder="Usuário" name="User" type="text" class="validate">
+			                        <label for="User" class="active">Usuário</label>
+			                    </div>
+			                </div>
+			                <div class="row">
+			                    <div class="input-field col s12">
+						     	    <i class="material-icons prefix">lock_open</i>
+			                        <input placeholder="Senha" name="Password" type="password" class="validate">
+			                        <label for="Password" class="active">Senha</label>
+			                    </div>
+			                </div>
+			        
+					        <div class="card-action">
+					            <input type="submit" class="btn btnLogin" value="Entrar">
+					        </div>
+			            </form>
+				        <div class="card-action ">
+				            <a href="signup.html"><h6 class="center-align waves-effect waves-light btn btnLogin">Cadastrar-se</h6></a>
+				        </div>
+			        </div>
+			        
+			    </div>
+			</div>
+			</div>
+		</div> 
+	</section>
+	<footer>
+	</footer>
+</body>
+<script>
+
+	/*
+	* Manda o form por ajax para a página login.php, dependendo do resultado, permite e redireciona o site
+	*/
+	function ajaxLogin()
+	{
+		var form = document.getElementById('login');
+		var formData = new FormData(form);
+		var request = new XMLHttpRequest();
+		// Add any event handlers here...
+		request.open('POST', 'checkLogin.php', true);
+		request.send(formData);
+		request.onreadystatechange = function() {
+	   		if(this.readyState == 4 && this.status == 200){
+	       		var response = JSON.parse(this.responseText);
+			    if (response.isLogged){
+			    	sendToSite();
+			    }
+			    else{
+			    	resendToLogin();
+			    }
+	       	}
+       }
+	}
+
+	function sendToSite()
+	{
+		Materialize.toast('Login efetuado com sucesso', 2000, 'green darken-1 rounded');
+		setTimeout(function(){
+								window.location = "mainSite.html";
+							 }, 2000);
+	}
+
+	function resendToLogin()
+	{
+		Materialize.toast('Usuário ou senha inválidos, tente novamente', 2000, 'red lighten-1 rounded');
+	}
+
+	function logout()
+	{
+		var request = new XMLHttpRequest();
+		// Add any event handlers here...
+		request.open('POST', 'doLogout.php', true);
+		request.send();
+		request.onreadystatechange = function() {
+	   		if(this.readyState == 4 && this.status == 200){
+	       		var response = JSON.parse(this.responseText);
+			    if (response.wasLogged){
+			    	alert("Usuário deslogado com sucesso.");
+					window.location = "index.html";
+			    }
+			    else if(response.wasNotLogged){
+			    	alert("Não há sessão ativa.")
+			    }
+	       	}
+	    }
+		
+	}
+
+	function checkLogin()
+	{
+		var request = new XMLHttpRequest();
+		// Add any event handlers here...
+		request.open('POST', 'checkLogin.php', true);
+		request.send();
+		request.onreadystatechange = function() {
+	   		if(this.readyState == 4 && this.status == 200){
+	   			var response = JSON.parse(this.responseText);
+	   			if(!response.isLogged){
+	   				//Usuário não tá logado, redireciona para o index
+	   				var pattern = new RegExp("localhost/index.html");
+	   				//Só redireciona se não estiver no próprio index, para evitar loops
+	   				if(!pattern.test(window.location)){
+						window.location = "index.html";
+	   				}
+	   			}
+	   			else
+	   			{
+	   				window.location = "mainSite.html";
+	   			}
+	   		}
+	   	}
+
+	}
+
+</script>
+
+</html>
