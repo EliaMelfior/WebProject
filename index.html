@@ -145,7 +145,7 @@
 	   		if(this.readyState == 4 && this.status == 200){
 	   			var response = JSON.parse(this.responseText);
 	   			if(!response.isLogged){
-	   				//Usuário não tá logado, redireciona para o index
+	   				//Usuário não está logado, redireciona para o index
 	   				var pattern = new RegExp("localhost/index.html");
 	   				//Só redireciona se não estiver no próprio index, para evitar loops
 	   				if(!pattern.test(window.location)){

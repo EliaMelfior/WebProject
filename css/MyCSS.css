@@ -5,6 +5,22 @@
     height: 30%;
 }
 
+#CanvasContainer {
+    float: none;
+    margin-top: 10%;
+    margin-right: auto;
+    margin-bottom: 5%;
+    width: 100%;
+}
+
+#MyCanvas {
+    height:420px;
+    width:680px;
+    display: block;
+    margin: auto;
+    border: 1px solid teal;
+}
+
 #About {
     float: none;
     margin: 10% auto;
@@ -23,4 +39,8 @@
  	display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.largeCard {
+    height:800;
 }

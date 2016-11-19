@@ -38,11 +38,11 @@
     <section>
 		<div class="container"> 
 			<div class="row">
-				<div class="col s12" id="canvasContainer">
-				    <div class="card ">
+				<div class="col s12" id="CanvasContainer">
+				    <div class="card">
 				        <div class="card-content">
 				            <span class="card-title black-text cardTitleCustom">Desenhe</span>
-				            <canvas id="myCanvas" class=""></canvas>
+				            <canvas id="MyCanvas"></canvas>
 				        </div>
 						<div class="card-action">
 				            <a href="#">Salvar Imagem</a>
@@ -68,7 +68,7 @@
 	   		if(this.readyState == 4 && this.status == 200){
 	   			var response = JSON.parse(this.responseText);
 	   			if(!response.isLogged){
-	   				//Usuário não tá logado, redireciona para o index
+	   				//Usuário não está logado, redireciona para o index
 					window.location = "index.html";
 	   			}
 	   			else
