@@ -35,18 +35,28 @@
     	</div>
     </nav>
 
-    <section>
+    <section id = "canvasSection">
 		<div class="container"> 
 			<div class="row">
 				<div class="col s12" id="CanvasContainer">
 				    <div class="card">
 				        <div class="card-content">
 				            <span class="card-title black-text cardTitleCustom">Desenhe</span>
-				            <canvas id="MyCanvas"></canvas>
+				            <canvas id="MyCanvas" width="680" height="420"></canvas>
+				            <div id="log"></div>
 				        </div>
-						<div class="card-action">
-				            <a href="#">Salvar Imagem</a>
-				            <a href="#">Limpar a Tela</a>
+						<div class="card-action container">
+							 <div class="row">
+						      <div class="col s2"></div>
+						      <div class="col s1"></div>
+						      <div class="col s3">
+						      	<a class="waves-effect waves-light btn" onclick="clearCanvas()">Limpar Canvas</a>
+						      </div>
+						      <div class="col s3">
+						      	<a class="waves-effect waves-light btn">Salvar Imagem</a>
+						      </div>
+						      <div class="col s2"></div>
+						    </div>
 		              	</div>
 				    </div>
 				</div>
@@ -58,6 +68,70 @@
 	</footer>
 </body>
 <script>
+	context = document.getElementById('MyCanvas').getContext("2d");
+	var offSetLeft = 620;
+	var offSetTop = 265;
+
+	$('#MyCanvas').mousedown(function(e){
+	  paint = true;
+	  addClick(e.pageX - offSetLeft, e.pageY - offSetTop);
+	  redraw();
+	});
+
+	/*$( document ).on( "mousemove", function( e ) {
+	  $( "#log" ).text( "pageX: " + e.pageX + ", pageY: " + e.pageY );
+	});
+	*/
+
+	$('#MyCanvas').mousemove(function(e){
+	  //$( "#log" ).text( "pageX: " + e.pageX + ", pageY: " + e.pageY );
+	  if(paint){
+	    addClick(e.pageX - offSetLeft, e.pageY - offSetTop, true);
+	    redraw();
+	  }
+	});
+
+	$('#MyCanvas').mouseup(function(e){
+	  paint = false;
+	});
+
+
+	$('#MyCanvas').mouseleave(function(e){
+	  paint = false;
+	});
+
+
+	var clickX = new Array();
+	var clickY = new Array();
+	var clickDrag = new Array();
+	var paint;
+
+	function addClick(x, y, dragging)
+	{
+	  clickX.push(x);
+	  clickY.push(y);
+	  clickDrag.push(dragging);
+	}
+
+	function redraw(){
+	  context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
+	  context.strokeStyle = "#df4b26";
+	  context.lineJoin = "round";
+	  context.lineWidth = 5;
+				
+	  for(var i=0; i < clickX.length; i++) {		
+	    context.beginPath();
+	    if(clickDrag[i] && i){
+	      context.moveTo(clickX[i-1], clickY[i-1]);
+	     }else{
+	       context.moveTo(clickX[i]-1, clickY[i]);
+	     }
+	     context.lineTo(clickX[i], clickY[i]);
+	     context.closePath();
+	     context.stroke();
+	  }
+	}
+
 	function checkLogin()
 	{
 		var request = new XMLHttpRequest();
@@ -77,7 +151,6 @@
 	   			}
 	   		}
 	   	}
-
 	}
 
 	function logout()
@@ -98,7 +171,18 @@
 			    }
 	       	}
 	    }
+	}
+
+	function clearCanvas()
+	{
+		var canvas = document.getElementById('MyCanvas');
+		var context = canvas.getContext('2d');
+
+		while (clickX.length) { clickX.pop(); }
+		while (clickY.length) { clickY.pop(); }
+		while (clickDrag.length) { clickDrag.pop(); }
 		
+		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 	}
 </script>
 </html>
