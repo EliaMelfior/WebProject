@@ -53,7 +53,7 @@
 						      	<a class="waves-effect waves-light btn" onclick="clearCanvas()">Limpar Canvas</a>
 						      </div>
 						      <div class="col s3">
-						      	<a class="waves-effect waves-light btn">Salvar Imagem</a>
+						      	<a class="waves-effect waves-light btn" onclick="saveImage()">Salvar Imagem</a>
 						      </div>
 						      <div class="col s2"></div>
 						    </div>
@@ -156,7 +156,6 @@
 	function logout()
 	{
 		var request = new XMLHttpRequest();
-		// Add any event handlers here...
 		request.open('POST', 'doLogout.php', true);
 		request.send();
 		request.onreadystatechange = function() {
@@ -183,6 +182,30 @@
 		while (clickDrag.length) { clickDrag.pop(); }
 		
 		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+	}
+
+	function saveImage()
+	{
+		var request = new XMLHttpRequest();
+		var delimiter = delimiter = '^';
+		var imageComposition = new Array(clickX);
+		imageComposition.push(delimiter);
+		imageComposition.push(clickY);
+		imageComposition.push(delimiter);
+		imageComposition.push(clickDrag);
+
+		request.open('POST', 'saveImage.php', true);
+
+		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		request.send("myObject="+encodeURIComponent(imageComposition.toString()));
+		request.onreadystatechange = doWhenFinished(); 
+	}
+
+	function doWhenFinished()
+	{
+		if(this.readyState == 4 && this.status == 200){
+	   		alert("Worked");
+	   	}
 	}
 </script>
 </html>
